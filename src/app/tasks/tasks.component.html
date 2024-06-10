@@ -2,15 +2,19 @@
   <header>
     <h2>{{name}}'s Tasks</h2>
     <menu>
-      <button>Add Task</button>
+      <button (click)="handleToggleTask()">Add Task</button>
     </menu>
+
   </header>
 
   <ul>
     @for(task of selectedUserTask; track task.id){
       <li>
-        <app-task [tasks]="task"/>
+        <app-task [tasks]="task" (complete)="onCompleteTask($event)"/>
       </li>
     }
   </ul>
 </section>
+@if (showTask) {
+  <app-new-task (showModal)="handleToggleTask()" (add)="onAddTask($event)"/>
+}

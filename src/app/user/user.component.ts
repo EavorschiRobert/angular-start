@@ -7,7 +7,9 @@ import {
   input,
   output,
 } from '@angular/core';
-import { IUser } from '../types';
+import { type IUser } from './user.models';
+import { CardComponent } from '../shared/card.component';
+
 
 // const randomIndex = Math.floor(Math.random()*DUMMY_USERS.length);
 
@@ -16,9 +18,11 @@ import { IUser } from '../types';
   standalone: true,
   templateUrl: './user.component.html',
   styleUrl: './user.component.css',
+  imports: [CardComponent]
 })
 export class UserComponent {
   //SENZA SIGNALS
+  @Input({required: true}) selected!: boolean;
   @Input({ required: true }) user!: IUser;
   @Output() select = new EventEmitter<string>();
   /*
