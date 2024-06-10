@@ -7,6 +7,7 @@ import {
   input,
   output,
 } from '@angular/core';
+import { IUser } from '../types';
 
 // const randomIndex = Math.floor(Math.random()*DUMMY_USERS.length);
 
@@ -18,18 +19,18 @@ import {
 })
 export class UserComponent {
   //SENZA SIGNALS
-  @Input({ required: true }) id!: string;
-  @Input({ required: true }) avatar!: string;
-  @Input({ required: true }) name!: string;
-  @Output() select = new EventEmitter();
-  //MORE RECENT
-  // select = output<string>();
+  @Input({ required: true }) user!: IUser;
+  @Output() select = new EventEmitter<string>();
+  /*
+  MORE RECENT
+  select = output<string>();
+  */
   //SENZA SIGNALS
   get imagePath() {
-    return 'assets/users/' + this.avatar;
+    return 'assets/users/' + this.user.avatar;
   }
   onSelectUser() {
-    this.select.emit(this.id);
+    this.select.emit(this.user.id);
   }
   //SIGNALS
   // avatar = input.required<string>();
