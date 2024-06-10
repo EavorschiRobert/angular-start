@@ -2,7 +2,7 @@
   <header>
     <h2>{{name}}'s Tasks</h2>
     <menu>
-      <button (click)="handleToggleTask()">Add Task</button>
+      <button (click)="onCloseAddTask()">Add Task</button>
     </menu>
 
   </header>
@@ -10,11 +10,11 @@
   <ul>
     @for(task of selectedUserTask; track task.id){
       <li>
-        <app-task [tasks]="task" (complete)="onCompleteTask($event)"/>
+        <app-task [tasks]="task"/>
       </li>
     }
   </ul>
 </section>
 @if (showTask) {
-  <app-new-task (showModal)="handleToggleTask()" (add)="onAddTask($event)"/>
+  <app-new-task (showModal)="onCloseAddTask()" (close)="onCloseAddTask()" [userId]="id"/>
 }

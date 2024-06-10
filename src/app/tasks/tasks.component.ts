@@ -1,8 +1,10 @@
 import { Component, Input } from "@angular/core";
-import { TaskComponent } from "../task/task.component";
+import { TaskComponent } from "./task/task.component";
+import { NewTaskComponent } from "./new-task/new-task.component";
+import { INewTask } from "./new-task/new-task.models";
+import { TaskService } from "./tasks.service";
+import { ITasks } from "./task/task.models";
 import { DUMMY_TASKS } from "../dummy-tasks";
-import { NewTaskComponent } from "../new-task/new-task.component";
-import { INewTask } from "../new-task/new-task.models";
 
 @Component({
   selector: "app-tasks",
@@ -14,26 +16,19 @@ import { INewTask } from "../new-task/new-task.models";
 export class TasksComponent{
   @Input({required: true}) id!: string;
   @Input({required: true}) name!: string;
+  private taskService: TaskService;
+  constructor(tasksService: TaskService){
+    this.taskService = tasksService;
+  }
   showTask = false;
-  tasks = DUMMY_TASKS;
   get selectedUserTask(){
-    return this.tasks.filter((item) => item.userId === this.id);
+    return this.taskService.getUserTasks(this.id);
   }
 
-  onCompleteTask(id: string){
-    this.tasks = this.tasks.filter((task) => task.id !== id);
-  }
-  handleToggleTask(){
+  // onCompleteTask(id: string){
+  //   this.tasks = this.tasks.filter((task) => task.id !== id);
+  // }
+  onCloseAddTask(){
     this.showTask = !this.showTask;
-  }
-  onAddTask(taskData: INewTask){
-    this.tasks.push({
-      id: new Date().getTime().toString(),
-      title: taskData.title,
-      summary: taskData.summary,
-      dueDate: taskData.date,
-      userId: this.id,
-    })
-    this.handleToggleTask();
   }
 }

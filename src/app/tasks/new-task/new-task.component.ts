@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ITasks } from '../task/task.models';
 import { INewTask } from './new-task.models';
+import { TaskService } from '../tasks.service';
 
 @Component({
   selector: 'app-new-task',
@@ -11,20 +12,27 @@ import { INewTask } from './new-task.models';
   imports: [FormsModule]
 })
 export class NewTaskComponent {
-  @Output() showModal = new EventEmitter<void>();
-  @Output() add = new EventEmitter<INewTask>();
+  @Output() close = new EventEmitter<void>();
+  @Input({required: true}) userId!: string;
   // enteredTitle = signal(""); WITH SIGNALS
   enteredTitle = "";
   enteredSummary = "";
   enteredDate = "";
+  private tasksService = inject(TaskService);
   toggleModal() {
-    this.showModal.emit();
+    this.close.emit();
   }
   handleSubmit(){
-    this.add.emit({
+    this.tasksService.addTask({
       title: this.enteredTitle,
       summary: this.enteredSummary,
       date: this.enteredDate,
-    })
+    }, this.userId);
+    this.close.emit();
+    // this.add.emit({
+    //   title: this.enteredTitle,
+    //   summary: this.enteredSummary,
+    //   date: this.enteredDate,
+    // })
   }
 }
